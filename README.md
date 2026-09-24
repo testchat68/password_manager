@@ -1,0 +1,209 @@
+# Dual Password Manager
+
+[![Python](https://img.shields.io/badge/Python-3.8%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Platform](https://img.shields.io/badge/Platform-Linux-FCC624?logo=linux&logoColor=black)](https://www.linuxmint.com/)
+[![Linux Mint](https://img.shields.io/badge/Linux%20Mint-21%20%2F%2022-87CF3E?logo=linuxmint&logoColor=white)](https://www.linuxmint.com/)
+[![GUI](https://img.shields.io/badge/GUI-Tkinter-FF6F00)](https://docs.python.org/3/library/tkinter.html)
+[![Crypto](https://img.shields.io/badge/Encryption-Fernet%20%2B%20scrypt-critical)](https://cryptography.io/)
+[![Storage](https://img.shields.io/badge/Storage-Local%20vault-informational)](#security-model)
+[![Offline](https://img.shields.io/badge/Cloud-None-success)](#security-model)
+[![Clipboard](https://img.shields.io/badge/Clipboard-Auto--clear%2030s-blueviolet)](#features)
+[![Code style](https://img.shields.io/badge/code-Python%203-brightgreen)](https://www.python.org/)
+[![Made with Python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://makeapullrequest.com)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](#)
+
+Desktop GUI for generating dual passwords and storing credentials in a locally encrypted vault. Built for Linux Mint with Python 3, Tkinter, and the `cryptography` library. No accounts, no cloud, no telemetry.
+
+The current UI strings are in **Bulgarian**. The vault file stays next to the script.
+
+---
+
+## Features
+
+- Dual password generator: two independent secrets joined as `PASSWORD1-PASSWORD2`
+- Length sliders from 16 to 24 characters per half
+- Character-set toggles: upper, lower, digits, symbols
+- Optional exclusion of ambiguous characters (`Il1O0`)
+- Optional ban on equal lengths (second length is randomized when needed)
+- Entropy estimate and strength label for the combined password
+- Encrypted local vault (`password_vault.enc`)
+- Master-password unlock / first-run vault creation
+- Change master password from the Settings menu
+- Search, add, edit, and delete vault entries
+- Multiple accounts per service
+- Show / hide stored password
+- Clipboard copy with automatic wipe after 30 seconds
+- Atomic vault writes and `0600` file permissions
+
+---
+
+## Security model
+
+| Layer | Implementation |
+| --- | --- |
+| Encryption | Fernet (AES-128-CBC + HMAC-SHA256) from the `cryptography` package |
+| Key derivation | `hashlib.scrypt` with a random 16-byte salt |
+| KDF calibration | First vault creation targets ~1 second of work, capped at `N = 2^20` or ~512 MB RAM |
+| Vault format | `salt (16) + n_pow + r + p + Fernet token` |
+| Persistence | Atomic write via `.tmp` then replace |
+| File mode | `chmod 600` on the vault |
+| Clipboard | Auto-clear after 30 seconds |
+| Network | None. Everything is local |
+
+**There is no password recovery.** If the master password is lost, the vault cannot be decrypted.
+
+This is a personal / educational tool. It is not a substitute for a professionally audited password manager if you need one.
+
+---
+
+## Requirements
+
+| Component | Why it is needed | How it is provided |
+| --- | --- | --- |
+| Python 3.8+ | Runtime (pathlib, f-strings, type hints, `hashlib.scrypt`) | System package |
+| Tkinter (`python3-tk`) | GUI toolkit used by the app | APT on Debian/Ubuntu/Mint |
+| `cryptography` | Fernet encrypt / decrypt | pip inside a virtualenv |
+| Standard library | `os`, `json`, `hashlib`, `secrets`, `base64`, `math`, `pathlib` | Bundled with Python |
+
+No other third-party packages are required.
+
+---
+
+## Install on Linux Mint
+
+Linux Mint 21.x ships Python 3.10. Linux Mint 22.x ships Python 3.12 and **blocks system-wide pip installs** (PEP 668 / externally managed environment). Use a virtual environment on both releases.
+
+### 1. System packages
+
+```bash
+sudo apt update
+sudo apt install python3 python3-pip python3-venv python3-tk
+```
+
+- `python3-tk` provides Tkinter. Without it the app fails at `import tkinter`.
+- `python3-venv` is required to create an isolated environment.
+
+Check Tkinter:
+
+```bash
+python3 -c "import tkinter; print('Tkinter OK')"
+```
+
+### 2. Project folder and virtualenv (recommended)
+
+```bash
+mkdir -p ~/apps/dual-password-manager
+cd ~/apps/dual-password-manager
+
+# put password_manager_gui.py in this folder
+
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+pip install cryptography
+```
+
+Optional `requirements.txt`:
+
+```text
+cryptography>=42.0.0
+```
+
+Then:
+
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Quick install without venv (Mint 21 only)
+
+On Mint 22 this usually fails with `externally-managed-environment`. Prefer the venv path above.
+
+```bash
+sudo apt install python3-tk python3-pip
+pip install --user cryptography
+```
+
+If `pip install cryptography` tries to compile from source and fails, install build headers and retry inside the venv:
+
+```bash
+sudo apt install python3-dev build-essential libssl-dev libffi-dev
+pip install cryptography
+```
+
+On current Mint versions a binary wheel is normally available and no compiler is needed.
+
+### 4. Run
+
+```bash
+source .venv/bin/activate   # if you created a venv
+python3 password_manager_gui.py
+```
+
+First launch asks you to create a master password and writes `password_vault.enc` next to the script.
+
+---
+
+## Usage
+
+1. Launch the app and unlock (or create) the vault.
+2. **Generator** tab: pick lengths and character types, then **Generate dual password**.
+3. Copy the result (clipboard clears after 30 seconds) or save it into the vault.
+4. **Saved passwords** tab: search, add, edit, or delete entries.
+5. **Settings → Change master password** re-encrypts the vault with a new key.
+
+Do not commit `password_vault.enc` or `.tmp` files to git.
+
+Suggested `.gitignore`:
+
+```gitignore
+.venv/
+__pycache__/
+password_vault.enc
+password_vault.tmp
+*.enc
+```
+
+---
+
+## Project layout
+
+```text
+.
+├── password_manager_gui.py   # application
+├── password_vault.enc        # created at runtime — keep private
+├── requirements.txt          # optional: cryptography
+└── README.md
+```
+
+---
+
+## How the generator works
+
+Each half of the dual password is built so that every selected character class appears at least once. The remaining characters are drawn from the full pool with `secrets`. The list is shuffled with Fisher–Yates using `secrets.randbelow`.
+
+Default format example:
+
+```text
+aB3$kLm9pQ...-Xy7!nOp2...
+```
+
+Entropy is estimated as `total_length * log2(pool_size)` and mapped to a strength label.
+
+---
+
+## Disclaimer
+
+- Keep backups of `password_vault.enc` in a safe place.
+- Choose a strong, unique master password. The vault is only as strong as that password.
+- The application UI is currently in Bulgarian.
+- Review the code before storing real credentials.
+- Lost master password = lost vault. There is no backdoor.
+
+---
+
+## License
+
+Released under the MIT License. Add a `LICENSE` file in the repository root if you publish this project.
