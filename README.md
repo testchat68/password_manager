@@ -60,7 +60,7 @@ Generator tab after a password has been created with the chosen settings:
 
 A dual password built from the full character set (upper, lower, digits, symbols) has about **260–310 bits** of entropy, depending on the two lengths (for example 18+23 characters is ~266 bits; 24+24 is ~311 bits). That is far above the ~128-bit threshold used for modern symmetric keys. Checking even a tiny fraction of a 2^260 search space is not feasible with any known supercomputer, so brute-forcing such a generated password is not a realistic attack. Vault confidentiality still depends on a strong master password, because an attacker who has `password_vault.enc` attacks the scrypt-derived key, not the stored secrets directly.
 
-This project has **not** had an independent security audit, formal penetration tests, an external cryptography review, or a published process for handling vulnerability reports. Use it with that limit in mind. The source is open, so the encryption path can be read end to end: there is no hidden network call and no concealed backdoor in the code that is published.
+This project has **not** had an independent security audit, formal penetration tests, an external cryptography review, or a published process for handling vulnerability reports. Keep that absence in mind. The cryptographic design itself is not a toy; this is only a reminder that the program is not an independently audited, official product. The source is open, so the encryption path can be read end to end: there is no hidden network call and no concealed backdoor in the code that is published.
 
 ---
 
