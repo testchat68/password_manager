@@ -14,7 +14,7 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://makeapullrequest.com)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](#)
 
-Desktop GUI for generating dual passwords and storing credentials in a locally encrypted vault. Built for Linux Mint with Python 3, Tkinter, and the `cryptography` library. No accounts, no cloud, no telemetry.
+Desktop GUI for generating one strong password composed of two complex random passwords joined by a hyphen. The two halves are kept at different lengths so the hyphen does not sit in the middle and the left-right pattern is harder to notice. The login secret is the full string; sites verify that whole value, not the two halves on their own. Built for Linux Mint with Python 3, Tkinter, and the `cryptography` library. No accounts, no cloud, no telemetry.
 
 The UI is in **English**. The vault file stays next to the script.
 
