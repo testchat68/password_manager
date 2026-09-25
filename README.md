@@ -62,6 +62,7 @@ A dual password built from the full character set (upper, lower, digits, symbols
 
 Please keep in mind:
 On one hand — this project has not had an independent security audit, formal penetration tests, an external cryptography review, or a published process for handling vulnerability reports. Keep that absence in mind.
+
 On the other hand — the cryptographic design itself is not a toy. This message is only a reminder that the program is not an independently audited official product. The source is open, so the encryption path can be read end to end: there is no hidden network call and no concealed backdoor in the published code.
 I asked four AI agents what they think of the code. All of them said that the security of this program depends solely on the master password.
 How to construct and remember a strong master password is explained in SHORT INSTRUCTIONS
