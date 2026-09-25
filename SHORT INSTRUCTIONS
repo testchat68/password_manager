@@ -1,0 +1,16 @@
+Short instructions:
+
+1. Download the files password_manager.py and password_manager_gui.py and move them to your HOME directory.
+2. Download the file password-manager.desktop and place it on the desktop.
+3. For all files, open Properties and enable “Allow executing file as program” (make them executable).
+4. Install Python, Tkinter and cryptography (how to do this is described in the text below).
+5. Launch the program from the desktop icon.
+6. To change the master password, use the terminal program: password_manager.py.
+
+Regarding the master password:
+1. Choose a password of 6–7–8 words that have no connection whatsoever to your past, present, or future life.
+2. Separate the words with digits that also have nothing to do with your past, present, or future life.
+3. Write the password down on a piece of paper and, at first, enter it 3 to 5 times so that the body’s muscle memory is activated. 
+4. After one week, destroy the password written on paper.
+5. Enter the password every day so you do not forget it. Do not skip a single day.
+Keep entering the password every day for as long as you use this program.
