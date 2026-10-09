@@ -56,7 +56,7 @@ Generator tab after a password has been created with the chosen settings:
 | Clipboard | Auto-clear after 30 seconds |
 | Network | None. Everything is local |
 
-**There is no password recovery.** If the master password is lost, the vault cannot be decrypted.
+**There is no password recovery.** If the master password is lost, the vault cannot be decrypted.  
 Please keep in mind that: 
 if you go several days in a row without entering your master password, 
 whether because of a holiday, illness, or simple laziness, 
