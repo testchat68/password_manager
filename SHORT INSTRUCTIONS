@@ -2,7 +2,7 @@ Short instructions:
 
 1. Download the files password_manager.py and password_manager_gui.py and move them to your HOME directory.
 2. Download the file password-manager.desktop and place it on the desktop.
-3. For all files, open Properties and enable “Allow executing file as program” (make them executable).
+3. For all 3 files, open Properties and enable “Allow executing file as program” (make them executable).
 4. Install Python, Tkinter and cryptography (how to do this is described in the text below).
 5. Launch the program from the desktop icon.
 6. To change the master password, use the terminal program: password_manager.py.
