@@ -57,6 +57,10 @@ Generator tab after a password has been created with the chosen settings:
 | Network | None. Everything is local |
 
 **There is no password recovery.** If the master password is lost, the vault cannot be decrypted.
+Please keep in mind that: 
+if you go several days in a row without entering your master password, 
+whether because of a holiday, illness, or simple laziness, 
+you are guaranteed to forget it and will lose access to all the passwords you've created so far.
 
 A dual password built from the full character set (upper, lower, digits, symbols) has about **260–310 bits** of entropy, depending on the two lengths (for example 18+23 characters is ~266 bits; 24+24 is ~311 bits). That is far above the ~128-bit threshold used for modern symmetric keys. Checking even a tiny fraction of a 2^260 search space is not feasible with any known supercomputer, so brute-forcing such a generated password is not a realistic attack. Vault confidentiality still depends on a strong master password, because an attacker who has `password_vault.enc` attacks the scrypt-derived key, not the stored secrets directly.
 
